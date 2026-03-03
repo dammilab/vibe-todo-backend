@@ -1,13 +1,15 @@
 require("dotenv").config();
-const dns = require("dns");
-dns.setServers(["8.8.8.8", "8.8.4.4"]);
+if (!process.env.DYNO) {
+  const dns = require("dns");
+  dns.setServers(["8.8.8.8", "8.8.4.4"]);
+}
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const todoRouter = require("./routers/todos");
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/todo-backend/todo";
 const allowedOrigins = [
   "http://localhost:3000",
