@@ -22,8 +22,11 @@ const allowedOrigins = [
 ];
 const corsOptions = {
   origin(origin, callback) {
-    // Allow local file frontend (Origin: null) and common local dev ports.
     if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    // Vercel 배포 URL은 서브도메인이 변경될 수 있으므로 패턴으로 허용합니다.
+    if (origin.endsWith(".vercel.app")) {
       return callback(null, true);
     }
     return callback(new Error("CORS origin not allowed"));
