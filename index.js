@@ -42,18 +42,11 @@ app.get("/", (req, res) => {
   res.send("Todo backend server is running");
 });
 
-const startServer = async () => {
-  try {
-    await mongoose.connect(MONGODB_URI);
-    console.log("몽고디비 연결 성공했습니다.");
+app.listen(PORT, () => {
+  console.log(`서버가 ${PORT}번 포트에서 실행 중입니다.`);
+});
 
-    app.listen(PORT, () => {
-      console.log(`서버가 ${PORT}번 포트에서 실행 중입니다.`);
-    });
-  } catch (error) {
-    console.error("MongoDB 연결 실패:", error.message);
-    process.exit(1);
-  }
-};
-
-startServer();
+mongoose
+  .connect(MONGODB_URI)
+  .then(() => console.log("몽고디비 연결 성공했습니다."))
+  .catch((error) => console.error("MongoDB 연결 실패:", error.message));
